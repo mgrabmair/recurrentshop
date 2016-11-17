@@ -29,7 +29,7 @@ __email__ = "fariz@datalog.ai"
 __status__ = "Production"
 
 
-_backend = getattr(K, K.backend() + '_backend')
+_backend = getattr(K, K._backend + '_backend')
 
 
 class learning_phase(object):
@@ -45,7 +45,7 @@ class learning_phase(object):
 		_backend._LEARNING_PHASE = self.learning_phase_place_holder
 
 
-if K.backend() == 'theano':
+if K._backend == 'theano':
 	rnn = backend.rnn
 else:
 	rnn = lambda *args, **kwargs: list(K.rnn(*args, **kwargs)) + [[]]
@@ -61,7 +61,7 @@ def _get_first_timestep(x):
 
 def _get_last_timestep(x):
 	ndim = K.ndim(x)
-	if K.backend() == 'tensorflow':
+	if K._backend == 'tensorflow':
 		import tensorflow as tf
 		slice_begin = tf.pack([0, tf.shape(x)[1] - 1] + [0] * (ndim - 2))
 		slice_size = tf.pack([-1, 1] + [-1] * (ndim - 2))
